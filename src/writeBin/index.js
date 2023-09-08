@@ -11,9 +11,9 @@ export default class DeviceBin {
   device;
   term;
   deviceInfo;
-  constructor(baudrates, terminal, inputCommand) {
+  constructor(baudrates, terminal) {
     this.baudrates = Number(baudrates)
-    this.term = new MyTerm(terminal, inputCommand)
+    this.term = new MyTerm(terminal)
   }
   connectDevice = async () => {
     if (!this.device) {
@@ -47,7 +47,6 @@ export default class DeviceBin {
       // Temporarily broken
       // await esploader.flash_id();
     } catch (e) {
-      console.error(e);
      this.term.term.writeln(`Error: ${e.message}`);
     }
   }
@@ -90,7 +89,6 @@ export default class DeviceBin {
         await this.esploader.write_flash(flashOptions);
         resolve()
       } catch (e) {
-        console.error(e);
        this.term.term.writeln(`Error: ${e.message}`);
         reject()
       } 

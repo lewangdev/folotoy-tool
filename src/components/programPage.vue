@@ -2,7 +2,8 @@
     <div class="program">
         <a-button @click="handlePushToFrontPage" :icon="h(LeftOutlined)">Back To Index</a-button>
         <!-- <a-button v-if="deviceBin&&deviceBin.device" @click="handleDisconnect" type="primary" danger style="float: right;">Erase</a-button> -->
-        <a-button v-if="deviceBin&&deviceBin.device" @click="handleDisconnect" type="primary" danger style="float: right;">Disconnect</a-button>
+        <a-button v-if="current === 1" @click="handleDisconnect" type="primary" danger
+            style="float: right;">Disconnect</a-button>
         <br />
         <br />
         <a-steps :items="items"></a-steps>
@@ -11,7 +12,8 @@
                 autocomplete="off" @finish="onBaulrateFinish">
                 <a-form-item label="Baulrate" name="baulrate"
                     :rules="[{ required: true, message: 'Please Select your baulrate!' }]">
-                    <a-select @change="handleChangeBaulrate" :value="balrateFormState.baulrate" style="width: 120px" :options="optionsBaulrate"></a-select>
+                    <a-select @change="handleChangeBaulrate" :value="balrateFormState.baulrate" style="width: 120px"
+                        :options="optionsBaulrate"></a-select>
                 </a-form-item>
                 <a-form-item :wrapper-col="{ offset: 11, span: 24 }">
                     <a-button type="primary" html-type="submit" :loading="connectLoading">Connect</a-button>
@@ -64,11 +66,11 @@ import {
     LeftOutlined
 } from '@ant-design/icons-vue';
 import DeviceBin from "../writeBin/index";
-import {useRouter} from 'vue-router'
+import { useRouter } from 'vue-router'
 const router = useRouter()
 const deviceBin = ref(null)
 const handlePushToFrontPage = () => {
-    if(!deviceBin.value || deviceBin.value.device === null) {
+    if (!deviceBin.value || deviceBin.value.device === null) {
         router.push('/')
     } else {
         window.location.href = '/'
@@ -136,10 +138,15 @@ const handleChangeBaulrate = (e) => {
     balrateFormState.baulrate = e
 }
 const onBaulrateFinish = async (values) => {
-    connectLoading.value = true
-    deviceBin.value = new DeviceBin(values.baulrate, 'terminal', 'inputCommand');
-    await deviceBin.value.connectDevice();
-    current.value = 1
+    try {
+        connectLoading.value = true
+        deviceBin.value = new DeviceBin(values.baulrate, 'terminal');
+        await deviceBin.value.connectDevice();
+        current.value = 1
+    } catch (e) {
+        current.value = 0
+        connectLoading.value = false
+    }
 };
 //file
 const fileList = ref([])
@@ -172,9 +179,27 @@ const onFileFinish = (values) => {
         const p = deviceBin.value.program([{ data: fileData.value, address: values.address }], (written, total) => {
             progress.value = Math.floor((written / total) * 100)
         });
+        p.catch(() => {
+            try {
+                handleDisconnect()
+            } catch (e) {
+                current.value = 0
+                connectLoading.value = false
+                writeLoading.value = false
+                showTerm.value = false
+            }
+        })
         p.finally(async () => {
-            current.value = 3
-            await deviceBin.value.disConnectDevice()
+            try {
+                await deviceBin.value.disConnectDevice()
+                current.value = 3
+                showTerm.value = false
+            } catch(e) {
+                current.value = 0
+                connectLoading.value = false
+                writeLoading.value = false
+                showTerm.value = false
+            }
         })
     }
 }

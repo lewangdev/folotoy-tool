@@ -10,5 +10,4 @@ module.exports = defineConfig({
     config.output.filename('[name].[hash].js').end()
     config.output.chunkFilename('[name].[hash].js').end()
   }
-  }
 })
