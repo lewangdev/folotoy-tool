@@ -2,7 +2,6 @@ const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   parallel: false,
   outputDir: './dist',
-  publicPath: process.env.NODE_ENV = '/',
   assetsDir: 'static',
   filenameHashing: true,
   productionSourceMap: false,
