@@ -12,7 +12,10 @@ export default class Deviceconsole {
   startConnection = async () => {
     // 避免重复点击
     if (this.device === null) {
-      this.device = await navigator.serial.requestPort({});
+      this.device = await navigator.serial.requestPort({
+        usbVendorId: '1A86',
+        usbProductId: '7523'
+      });
       this.transport = new Transport(this.device);
     }
     await this.transport.connect();

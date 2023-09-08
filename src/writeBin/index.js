@@ -18,7 +18,7 @@ export default class DeviceBin {
   connectDevice = async () => {
     if (!this.device) {
       this.device = await navigator.serial.requestPort({
-        usbVendorId: '',
+        usbVendorId: '1A86',
         usbProductId: ''
       });
       this.transport = new Transport(this.device);
