@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <h1 @click="handlePushToFrontPage"><img src="./assets/favicon.svg" alt=""> FoloToy Web Tool</h1>
+    <h1 @click="handlePushToFrontPage"><img src="./assets/title.svg" alt=""> FoloToy Web Tool</h1>
     <router-view></router-view>
   </div>
 </template>
