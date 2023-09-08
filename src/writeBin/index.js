@@ -1,4 +1,4 @@
-/* eslint-disable */ 
+/* eslint-disable */
 import { ESPLoader, Transport } from "esptool-js";
 import { MyTerm } from "../xterm/index";
 import CryptoJS from "crypto-js";
@@ -18,7 +18,7 @@ export default class DeviceBin {
   connectDevice = async () => {
     if (!this.device) {
       this.device = await navigator.serial.requestPort({
-        usbVendorId: '1A86',
+        usbVendorId: '',
         usbProductId: ''
       });
       this.transport = new Transport(this.device);
@@ -47,28 +47,36 @@ export default class DeviceBin {
       // Temporarily broken
       // await esploader.flash_id();
     } catch (e) {
-     this.term.term.writeln(`Error: ${e.message}`);
+      console.log(e)
+      this.term.term.writeln(`Error: ${e.message}`);
     }
   }
-  eraseDevice = () =>{
+  eraseDevice = () => {
     const promise = new Promise(async (resolve, reject) => {
       try {
         await this.esploader.erase_flash();
         resolve()
       } catch (e) {
         reject()
-       this.term.term.writeln(`Error: ${e.message}`);
+        this.term.term.writeln(`Error: ${e.message}`);
       }
     })
     return promise
   }
-  disConnectDevice =  async () => {
+  disConnectDevice = async () => {
     if (this.transport) {
-      await this.transport.disconnect();
+      try {
+        await this.transport.disconnect();
+        this.device = null;
+        this.transport = null;
+        this.term.disposeTerm();
+      } catch(e) {
+        this.device = null;
+        this.transport = null;
+        this.term.disposeTerm();
+      }
     }
-    this.device = null;
-    this.transport = null;
-    this.term.disposeTerm();
+
   }
   program = (fileArray, progressCallback) => {
     const promise = new Promise(async (resolve, reject) => {
@@ -89,9 +97,9 @@ export default class DeviceBin {
         await this.esploader.write_flash(flashOptions);
         resolve()
       } catch (e) {
-       this.term.term.writeln(`Error: ${e.message}`);
+        this.term.term.writeln(`Error: ${e.message}`);
         reject()
-      } 
+      }
     })
     return promise
   }
