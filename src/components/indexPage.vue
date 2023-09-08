@@ -8,7 +8,7 @@
             <img src="../assets/console.svg" alt="">
             <h2>Console</h2>
         </div>
-        <a-modal v-model:open="showTerm" style="width: 80%;" title="Console" @ok="handleOk">
+        <a-modal :getContainer="getContainer" v-model:open="showTerm" style="width: 80%;" title="Console" @ok="handleOk">
             <template #footer>
                 <a-button key="submit" type="primary" danger @click="handleOk">Disconnect</a-button>
             </template>
@@ -51,6 +51,9 @@ const handlePush = (type) => {
     if (type === 'console') {
         onConnect()
     }
+}
+const getContainer = () => {
+  return document.querySelector(".app")
 }
 </script>
   

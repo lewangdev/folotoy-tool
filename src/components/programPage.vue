@@ -55,26 +55,45 @@
 </template>
   
 <script setup>
-import { Select as ASelect, Button as AButton, Form as AForm, FormItem as AFormItem, Steps as ASteps, Upload as AUpload, message, Input as AInput, Progress as AProgress, Result as AResult } from 'ant-design-vue';
-import { ref, reactive, h, watch } from 'vue';
+import { Select as ASelect, Button as AButton, Form as AForm, FormItem as AFormItem, Steps as ASteps, Upload as AUpload, message, Input as AInput, Progress as AProgress, Result as AResult, Modal } from 'ant-design-vue';
+import { ref, reactive, h, watch, createVNode } from 'vue';
 import {
     ApiOutlined,
     FileOutlined,
     SmileOutlined,
     SmileTwoTone,
     RedoOutlined,
-    LeftOutlined
+    LeftOutlined,
+    ExclamationCircleOutlined
 } from '@ant-design/icons-vue';
 import DeviceBin from "../writeBin/index";
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const deviceBin = ref(null)
+const getContainer = () => {
+  return document.querySelector(".app")
+}
 const handlePushToFrontPage = () => {
-    if (!deviceBin.value || deviceBin.value.device === null) {
+    if (showTerm.value === true) {
+        Modal.confirm({
+            getContainer: getContainer(),
+            title: 'Confirm',
+            icon: createVNode(ExclamationCircleOutlined),
+            content: 'Programming is in process, are you sure to leave?',
+            okText: '确认',
+            cancelText: '取消',
+            onOk: () => {
+                window.location.href = '/'
+            }
+        });
+    } else {
+        if (!deviceBin.value || deviceBin.value.device === null) {
         router.push('/')
     } else {
         window.location.href = '/'
     }
+    }
+    
 }
 //steps
 const current = ref(0);
@@ -188,6 +207,7 @@ const onFileFinish = (values) => {
                 writeLoading.value = false
                 showTerm.value = false
             }
+            message.error('Something wrong with the device, please reconnect and try again')
         })
         p.finally(async () => {
             try {
