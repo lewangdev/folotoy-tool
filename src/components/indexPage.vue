@@ -2,15 +2,15 @@
     <div class="wrap">
         <div @click="handlePush('program')">
             <img src="../assets/programming.svg" alt="">
-            <h2>Program</h2>
+            <h2>{{ t('index.program') }}</h2>
         </div>
         <div @click="handlePush('console')">
             <img src="../assets/console.svg" alt="">
-            <h2>Console</h2>
+            <h2>{{ t('index.console') }}</h2>
         </div>
         <a-modal :getContainer="getContainer" v-model:open="showTerm" style="width: 80%;" title="Console" @ok="handleOk">
             <template #footer>
-                <a-button key="submit" type="primary" danger @click="handleOk">Disconnect</a-button>
+                <a-button key="submit" type="primary" danger @click="handleOk">{{ t('index.disconnect') }}</a-button>
             </template>
             <console-page :deviceconsole="deviceconsole"></console-page>
         </a-modal>
@@ -24,6 +24,8 @@ import consolePage from './consolePage.vue'
 import { nextTick, ref } from 'vue'
 import Deviceconsole from "../console/index";
 import { Modal as AModal } from 'ant-design-vue'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const router = useRouter()
 const deviceconsole = ref(null)
 const showTerm = ref(false)

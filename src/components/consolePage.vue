@@ -1,6 +1,6 @@
 <template>
     <div class="console">
-        <a-button @click="onRestart" type="primary" html-type="submit">Restart</a-button>
+        <a-button @click="onRestart" type="primary" html-type="submit">{{ t('console.restart') }}</a-button>
         <div id="terminal"
             style="position: relative;height: 500px;background-color: #000; margin-top: 20px;overflow: scroll;padding: 0 16px;">
         </div>
@@ -10,6 +10,8 @@
 <script setup>
 import { Button as AButton } from 'ant-design-vue';
 import { defineProps, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const props = defineProps({
     deviceconsole: {
         required: true

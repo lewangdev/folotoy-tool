@@ -23,7 +23,7 @@ class MyTerm {
   setTerm(transport) {
     this.term = new Terminal({
       cols: 80,
-      rows: 50,
+      rows: 20,
       cursorBlink: true,
       cursorStyle: "underline",
       theme: {

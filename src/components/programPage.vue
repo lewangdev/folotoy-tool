@@ -1,40 +1,40 @@
 <template>
     <div class="program">
-        <a-button @click="handlePushToFrontPage" :icon="h(LeftOutlined)">Back To Index</a-button>
+        <a-button @click="handlePushToFrontPage" :icon="h(LeftOutlined)">{{ t('program.backToIndex') }}</a-button>
         <!-- <a-button v-if="deviceBin&&deviceBin.device" @click="handleDisconnect" type="primary" danger style="float: right;">Erase</a-button> -->
         <a-button v-if="current === 1" @click="handleDisconnect" type="primary" danger
-            style="float: right;">Disconnect</a-button>
+            style="float: right;">{{ t('index.disconnect') }}</a-button>
         <br />
         <br />
         <a-steps :items="items"></a-steps>
         <div class="content" v-if="current === 0">
             <a-form :model="balrateFormState" name="basic" :label-col="{ span: 11 }" :wrapper-col="{ span: 24 }"
                 autocomplete="off" @finish="onBaulrateFinish">
-                <a-form-item label="Baulrate" name="baulrate"
-                    :rules="[{ required: true, message: 'Please Select your baulrate!' }]">
+                <a-form-item :label="t('program.baulrate')" name="baulrate"
+                    :rules="[{ required: true, message: t('program.selectBaulrate')}]">
                     <a-select @change="handleChangeBaulrate" :value="balrateFormState.baulrate" style="width: 120px"
                         :options="optionsBaulrate"></a-select>
                 </a-form-item>
                 <a-form-item :wrapper-col="{ offset: 11, span: 24 }">
-                    <a-button type="primary" html-type="submit" :loading="connectLoading">Connect</a-button>
+                    <a-button type="primary" html-type="submit" :loading="connectLoading">{{ t('program.connect') }}</a-button>
                 </a-form-item>
             </a-form>
         </div>
         <div class="content" v-if="current === 1">
             <a-form @finish="onFileFinish" :model="fileFormState" name="file" :label-col="{ span: 11 }"
                 :wrapper-col="{ span: 24 }">
-                <a-form-item label="Address" name="address" :rules="[{ required: true, message: 'Please input address!' }]">
+                <a-form-item :label="t('program.address')" name="address" :rules="[{ required: true, message:  t('program.inputAddress')}]">
                     <a-input style="width: 120px" v-model:value="fileFormState.address" />
                 </a-form-item>
                 <a-form-item :wrapper-col="{ offset: 11, span: 24 }">
                     <a-upload accept=".bin" :file-list="fileList" :before-upload="beforeUpload" @remove="handleRemove">
                         <a-button>
-                            Select File
+                            {{ t('program.selectFile') }}
                         </a-button>
                     </a-upload>
                 </a-form-item>
                 <a-form-item :wrapper-col="{ offset: 11, span: 24 }">
-                    <a-button type="primary" html-type="submit" :loading="writeLoading">Write</a-button>
+                    <a-button type="primary" html-type="submit" :loading="writeLoading">{{ t('program.write') }}</a-button>
                 </a-form-item>
             </a-form>
         </div>
@@ -42,14 +42,14 @@
             <a-progress :percent="progress" />
         </div>
         <div class="content" v-if="current === 3">
-            <a-result title="Great, Please Restart Your Device!">
+            <a-result :title="t('program.success')">
                 <template #icon>
                     <smile-twoTone />
                 </template>
             </a-result>
         </div>
         <div v-show="showTerm" id="terminal"
-            style="position: relative;height: 500px;background-color: #000; margin-top: 20px;overflow: scroll;padding: 0 16px;">
+            style="position: relative;max-height: 500px;background-color: #000; margin-top: 20px;overflow: auto;padding: 0 16px;">
         </div>
     </div>
 </template>
@@ -68,6 +68,8 @@ import {
 } from '@ant-design/icons-vue';
 import DeviceBin from "../writeBin/index";
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const router = useRouter()
 const deviceBin = ref(null)
 const getContainer = () => {
@@ -79,9 +81,9 @@ const handlePushToFrontPage = () => {
             getContainer: getContainer(),
             title: 'Confirm',
             icon: createVNode(ExclamationCircleOutlined),
-            content: 'Programming is in process, are you sure to leave?',
-            okText: '确认',
-            cancelText: '取消',
+            content: t('program.inProcessTip'),
+            okText: t('program.confirm'),
+            cancelText: t('program.cancle'),
             onOk: () => {
                 window.location.href = '/'
             }
@@ -99,22 +101,22 @@ const handlePushToFrontPage = () => {
 const current = ref(0);
 const items = ref([
     {
-        title: 'Connect Device',
+        title: t('program.stepConnect'),
         status: 'process',
         icon: h(ApiOutlined),
     },
     {
-        title: 'Select File',
+        title:  t('program.selectFile'),
         status: 'wait',
         icon: h(FileOutlined),
     },
     {
-        title: 'In Progress',
+        title: t('program.inProcess'),
         status: 'wait',
         icon: h(RedoOutlined),
     },
     {
-        title: 'Done',
+        title: t('program.done'),
         status: 'wait',
         icon: h(SmileOutlined),
     },
@@ -190,7 +192,7 @@ const handleRemove = () => {
 }
 const onFileFinish = (values) => {
     if (fileList.value.length === 0) {
-        message.error('Please select file')
+        message.error( t('program.pleaseSelectFile'))
     } else {
         writeLoading.value = true
         current.value = 2
@@ -207,7 +209,7 @@ const onFileFinish = (values) => {
                 writeLoading.value = false
                 showTerm.value = false
             }
-            message.error('Something wrong with the device, please reconnect and try again')
+            message.error(t('disconnectError'))
         })
         p.finally(async () => {
             try {
