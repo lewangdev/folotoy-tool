@@ -8,7 +8,7 @@
             <img src="../assets/console.svg" alt="">
             <h2>{{ t('index.console') }}</h2>
         </div>
-        <a-modal :getContainer="getContainer" v-model:open="showTerm" style="width: 80%;" title="Console" @ok="handleOk">
+        <a-modal :getContainer="getContainer" v-model:open="showTerm" style="width: 80%;" :title="t('index.console')" @ok="handleOk" @cancel="handleOk">
             <template #footer>
                 <a-button key="submit" type="primary" danger @click="handleOk">{{ t('index.disconnect') }}</a-button>
             </template>
