@@ -79,7 +79,7 @@ const handlePushToFrontPage = () => {
     if (showTerm.value === true) {
         Modal.confirm({
             getContainer: getContainer(),
-            title: 'Confirm',
+            title: t('program.confirm'),
             icon: createVNode(ExclamationCircleOutlined),
             content: t('program.inProcessTip'),
             okText: t('program.confirm'),
@@ -209,7 +209,7 @@ const onFileFinish = (values) => {
                 writeLoading.value = false
                 showTerm.value = false
             }
-            message.error(t('disconnectError'))
+            message.error(t('program.disconnectError'))
         })
         p.finally(async () => {
             try {
