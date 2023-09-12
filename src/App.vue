@@ -8,7 +8,7 @@
     </div>
     <router-view></router-view>
     <footer>
-      <img style="width: 25px;position: relative;top: 7px;" src="./assets/rebuild.svg" alt=""> Created by<a-button @click="handlePushToFolotoy" style="padding: 0 4px" type="link" ghost>FoloToy.com</a-button>@ 2023 Huitong
+      <img style="width: 25px;position: relative;top: 7px;" src="./assets/rebuild.svg" alt=""> Created by<a-button @click="handlePushToFolotoy" style="padding: 0 4px" type="link" ghost>FoloToy.com</a-button>@ 2023
     </footer>
   </div>
 </template>
