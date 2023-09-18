@@ -52,6 +52,7 @@ export default class DeviceBin {
     }
   }
   eraseDevice = () => {
+    console.log(111)
     const promise = new Promise(async (resolve, reject) => {
       try {
         await this.esploader.erase_flash();
