@@ -39,7 +39,11 @@ export default createI18n({
         inProcess: '写入中',
         done: '完成',
         pleaseSelectFile: '请选择文件',
-        disconnectError: '设备出错，请重新连接再试'
+        disconnectError: '设备出错，请重新连接再试',
+        erase: '抹除',
+        eraseSuccess: '设备已被成功抹除',
+        eraseError: '抹除设备失败',
+        confirmErase: '确定抹除设备'
       }
     },
     'zh-TW': {
@@ -68,7 +72,11 @@ export default createI18n({
             inProcess: '寫入中',
             done: '完成',
             pleaseSelectFile: '請選擇文件',
-            disconnectError: '設備出錯，請重新連後重試'
+            disconnectError: '設備出錯，請重新連後重試',
+            erase: '抹除',
+            eraseSuccess: '設備已被成功抹除',
+            eraseError: '抹除設備失敗',
+            confirmErase: '確定抹除設備'
           }
     },
     'en-US': {
@@ -97,7 +105,11 @@ export default createI18n({
         inProcess: 'In Process',
         done: 'Done',
         pleaseSelectFile: 'Please Select File',
-        disconnectError: 'Something wrong with the device, please reconnect and try again'
+        disconnectError: 'Something wrong with the device, please reconnect and try again',
+        erase: 'Erase',
+        eraseSuccess: 'Device has been erased successfully',
+        eraseError: 'Something wrong with the device, please reconnect and try again',
+        confirmErase: 'Are you sure to erase device?'
       }
     },
   }

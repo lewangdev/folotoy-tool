@@ -2,8 +2,11 @@
     <div class="program">
         <a-button @click="handlePushToFrontPage" :icon="h(LeftOutlined)">{{ t('program.backToIndex') }}</a-button>
         <!-- <a-button v-if="deviceBin&&deviceBin.device" @click="handleDisconnect" type="primary" danger style="float: right;">Erase</a-button> -->
-        <a-button v-if="current === 1" @click="handleDisconnect" type="primary" danger
-            style="float: right;">{{ t('index.disconnect') }}</a-button>
+        <a-button v-if="current === 1" @click="handleDisconnect" type="primary" danger style="float: right;">{{
+            t('index.disconnect') }}</a-button>
+        <a-button v-if="current === 1" @click="confirmErase" type="primary" danger ghost
+            style="float: right;margin-right: 8px">{{ t('program.erase') }}</a-button>
+
         <br />
         <br />
         <a-steps :items="items"></a-steps>
@@ -11,19 +14,21 @@
             <a-form :model="balrateFormState" name="basic" :label-col="{ span: 11 }" :wrapper-col="{ span: 24 }"
                 autocomplete="off" @finish="onBaulrateFinish">
                 <a-form-item :label="t('program.baulrate')" name="baulrate"
-                    :rules="[{ required: true, message: t('program.selectBaulrate')}]">
+                    :rules="[{ required: true, message: t('program.selectBaulrate') }]">
                     <a-select @change="handleChangeBaulrate" :value="balrateFormState.baulrate" style="width: 120px"
                         :options="optionsBaulrate"></a-select>
                 </a-form-item>
                 <a-form-item :wrapper-col="{ offset: 11, span: 24 }">
-                    <a-button type="primary" html-type="submit" :loading="connectLoading">{{ t('program.connect') }}</a-button>
+                    <a-button type="primary" html-type="submit" :loading="connectLoading">{{ t('program.connect')
+                    }}</a-button>
                 </a-form-item>
             </a-form>
         </div>
         <div class="content" v-if="current === 1">
             <a-form @finish="onFileFinish" :model="fileFormState" name="file" :label-col="{ span: 11 }"
                 :wrapper-col="{ span: 24 }">
-                <a-form-item :label="t('program.address')" name="address" :rules="[{ required: true, message:  t('program.inputAddress')}]">
+                <a-form-item :label="t('program.address')" name="address"
+                    :rules="[{ required: true, message: t('program.inputAddress') }]">
                     <a-input style="width: 120px" v-model:value="fileFormState.address" />
                 </a-form-item>
                 <a-form-item :wrapper-col="{ offset: 11, span: 24 }">
@@ -73,7 +78,7 @@ const { t } = useI18n()
 const router = useRouter()
 const deviceBin = ref(null)
 const getContainer = () => {
-  return document.querySelector(".app")
+    return document.querySelector(".app")
 }
 const handlePushToFrontPage = () => {
     if (showTerm.value === true) {
@@ -90,12 +95,12 @@ const handlePushToFrontPage = () => {
         });
     } else {
         if (!deviceBin.value || deviceBin.value.device === null) {
-        router.push('/')
-    } else {
-        window.location.href = '/'
+            router.push('/')
+        } else {
+            window.location.href = '/'
+        }
     }
-    }
-    
+
 }
 //steps
 const current = ref(0);
@@ -106,7 +111,7 @@ const items = ref([
         icon: h(ApiOutlined),
     },
     {
-        title:  t('program.selectFile'),
+        title: t('program.selectFile'),
         status: 'wait',
         icon: h(FileOutlined),
     },
@@ -192,7 +197,7 @@ const handleRemove = () => {
 }
 const onFileFinish = (values) => {
     if (fileList.value.length === 0) {
-        message.error( t('program.pleaseSelectFile'))
+        message.error(t('program.pleaseSelectFile'))
     } else {
         writeLoading.value = true
         current.value = 2
@@ -216,7 +221,7 @@ const onFileFinish = (values) => {
                 await deviceBin.value.disConnectDevice()
                 current.value = 3
                 showTerm.value = false
-            } catch(e) {
+            } catch (e) {
                 current.value = 0
                 connectLoading.value = false
                 writeLoading.value = false
@@ -231,6 +236,37 @@ const handleDisconnect = async () => {
     connectLoading.value = false
     writeLoading.value = false
     showTerm.value = false
+}
+const confirmErase = () => {
+    Modal.confirm({
+        getContainer: getContainer(),
+        title: t('program.confirm'),
+        icon: createVNode(ExclamationCircleOutlined),
+        content: t('program.confirmErase'),
+        okText: t('program.confirm'),
+        cancelText: t('program.cancle'),
+        onOk: () => {
+            handleErase()
+        }
+    });
+}
+const handleErase = () => {
+    current.value = 2
+    showTerm.value = true
+    deviceBin.value.eraseDevice().then(() => {
+        handleDisconnect()
+        message.success(t('program.eraseSuccess'))
+    }).catch(() => {
+        try {
+            handleDisconnect()
+        } catch (e) {
+            current.value = 0
+            connectLoading.value = false
+            writeLoading.value = false
+            showTerm.value = false
+        }
+        message.error(t('program.eraseError'))
+    })
 }
 </script>
   
