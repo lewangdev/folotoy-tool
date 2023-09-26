@@ -2,7 +2,7 @@
     <div class="console">
         <a-button @click="onRestart" type="primary" html-type="submit">{{ t('console.restart') }}</a-button>
         <div id="terminal"
-            style="position: relative;height: 500px;background-color: #000; margin-top: 20px;overflow: scroll;padding: 0 16px;">
+            style="position: relative;height: 500px; margin-top: 20px;overflow: scroll;padding: 0 16px;">
         </div>
     </div>
 </template>
@@ -36,7 +36,7 @@ const onRestart = () => {
     text-align: center;
 }
 
-.xterm {
+/* .xterm {
     padding-bottom: 40px;
 }
 
@@ -46,6 +46,6 @@ const onRestart = () => {
 
 .xterm-viewport {
     display: none;
-}
+} */
 </style>
   
