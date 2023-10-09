@@ -23,6 +23,7 @@ class MyTerm {
   }
   setTerm(transport) {
     this.term = new Terminal({
+      convertEol: true,
       disableStdin: true,
       rows: 40,
       cols: 100,
