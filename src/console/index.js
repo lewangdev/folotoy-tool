@@ -1,5 +1,6 @@
 import { Transport } from "esptool-js";
 import { MyTerm } from "../xterm/index";
+
 // 连接按钮
 export default class Deviceconsole {
   device = null
@@ -28,12 +29,13 @@ export default class Deviceconsole {
     this.term.writeTerm(' success: ' + this.deviceInfo)
     this.term.prompt()
     while (!this.isConsoleClosed) {
-      let val = await this.transport.rawRead();
-      if (typeof val !== "undefined") {
-        this.term.writeTerm(val);
-      } else {
-        break;
-      }
+        let val = await this.transport.rawRead();
+        if (typeof val !== "undefined") {
+          this.term.writeTerm(val);
+        } else {
+          break;
+        }
+    
     }
     console.log("quitting console");
   }

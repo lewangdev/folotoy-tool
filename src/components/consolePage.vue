@@ -8,7 +8,7 @@
 </template>
   
 <script setup>
-import { Button as AButton } from 'ant-design-vue';
+import { Button as AButton, message } from 'ant-design-vue';
 import { defineProps, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
@@ -18,7 +18,13 @@ const props = defineProps({
     }
 })
 onMounted(async () => {
+    try {
+
     await props.deviceconsole.startWriting()
+    } catch(e) {
+        console.log(e)
+        message.error(t('program.disconnectError'))
+    }
 })
 const onRestart = () => {
     props.deviceconsole.resetDevice()
