@@ -26,20 +26,20 @@ const props = defineProps({
 const onRestart = () => {
     props.deviceconsole.resetDevice()
 }
-const handleKeyDown = (event, ev) => {
-    console.log(event, ev)
-    if (event.key === "Enter") {
-        // 处理回车事件
-        console.log("回车键已按下！");
-        props.deviceconsole.term.writeTermDebouce('Folotoy $: ' + event.target.value + '\r\n')
-        const encoder = new TextEncoder();
-        const uint8Array = encoder.encode(event.target.value);
-        props.deviceconsole.transport.write(uint8Array)
-        console.log(uint8Array)
-        event.target.value = ''
+// const handleKeyDown = (event, ev) => {
+//     console.log(event, ev)
+//     if (event.key === "Enter") {
+//         // 处理回车事件
+//         console.log("回车键已按下！");
+//         props.deviceconsole.term.writeTermDebouce('Folotoy $: ' + event.target.value + '\r\n')
+//         const encoder = new TextEncoder();
+//         const uint8Array = encoder.encode(event.target.value);
+//         props.deviceconsole.transport.write(uint8Array)
+//         console.log(uint8Array)
+//         event.target.value = ''
 
-    }
-}
+//     }
+// }
 //console
 </script>
   
