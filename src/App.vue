@@ -48,8 +48,7 @@ const langSelection = [
 </script>
 
 <style>
-#app,
-.app {
+#app, .app {
   width: 100%;
   height: 100%;
 }

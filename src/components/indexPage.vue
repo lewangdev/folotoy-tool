@@ -8,7 +8,8 @@
             <img src="../assets/console.svg" alt="">
             <h2>{{ t('index.console') }}</h2>
         </div>
-        <a-modal :getContainer="getContainer" v-model:open="showTerm" style="width: 80%;" :title="t('index.console')" @ok="handleOk" @cancel="handleOk">
+        <a-modal :getContainer="getContainer" v-model:open="showTerm" style="width: 80%;" :title="t('index.console')"
+            @ok="handleOk" @cancel="handleOk">
             <template #footer>
                 <a-button key="submit" type="primary" danger @click="handleOk">{{ t('index.disconnect') }}</a-button>
             </template>
@@ -18,7 +19,7 @@
 </template>
   
 <script setup>
-import { Button as AButton } from 'ant-design-vue';
+import { Button as AButton, message } from 'ant-design-vue';
 import { useRouter } from 'vue-router'
 import consolePage from './consolePage.vue'
 import { nextTick, ref } from 'vue'
@@ -32,19 +33,25 @@ const showTerm = ref(false)
 const handleOk = () => {
     location.reload()
 };
-const onConnect = () => {
+const onConnect = async () => {
     deviceconsole.value = new Deviceconsole('terminal');
-    nextTick(async () => {
-        try {
-            await deviceconsole.value.startConnection();
-            showTerm.value = true
-        } catch (e) {
-            console.log(e)
-            showTerm.value = false
-        }
-    })
-
+    try {
+        await deviceconsole.value.startConnection();
+        showTerm.value = true
+        nextTick(startWriting)
+    } catch (e) {
+        console.log(e)
+        showTerm.value = false
+    }
 };
+const startWriting = async () => {
+    try {
+        await deviceconsole.value.startWriting()
+    } catch (e) {
+        console.log(e)
+        message.error(t('program.disconnectError'))
+    }
+}
 const handlePush = (type) => {
     if (!type) return
     if (type === 'program') {
@@ -55,7 +62,7 @@ const handlePush = (type) => {
     }
 }
 const getContainer = () => {
-  return document.querySelector(".app")
+    return document.querySelector(".app")
 }
 </script>
   

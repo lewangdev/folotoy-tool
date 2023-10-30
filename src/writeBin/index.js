@@ -44,11 +44,8 @@ export default class DeviceBin {
       };
       this.esploader = new ESPLoader(flashOptions);
       this.chip = await this.esploader.main_fn();
-      // Temporarily broken
-      // await esploader.flash_id();
     } catch (e) {
       console.log(e)
-      this.term.term.writeln(`Error: ${e.message}`);
     }
   }
   eraseDevice = () => {

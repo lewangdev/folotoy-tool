@@ -53,15 +53,14 @@
                 </template>
             </a-result>
         </div>
-        <div v-show="showTerm" id="terminal"
-            style="position: relative;max-height: 500px;background-color: #000; margin-top: 20px;overflow: auto;padding: 0 16px;">
+        <div v-if="showTerm" id="terminal" style="position: relative;height: 50%; margin: 20px 0">
         </div>
     </div>
 </template>
   
 <script setup>
 import { Select as ASelect, Button as AButton, Form as AForm, FormItem as AFormItem, Steps as ASteps, Upload as AUpload, message, Input as AInput, Progress as AProgress, Result as AResult, Modal } from 'ant-design-vue';
-import { ref, reactive, h, watch, createVNode } from 'vue';
+import { ref, reactive, h, watch, createVNode, nextTick } from 'vue';
 import {
     ApiOutlined,
     FileOutlined,
@@ -163,16 +162,21 @@ const balrateFormState = reactive({
 const handleChangeBaulrate = (e) => {
     balrateFormState.baulrate = e
 }
-const onBaulrateFinish = async (values) => {
-    try {
-        connectLoading.value = true
-        deviceBin.value = new DeviceBin(values.baulrate, 'terminal');
-        await deviceBin.value.connectDevice();
-        current.value = 1
-    } catch (e) {
-        current.value = 0
-        connectLoading.value = false
-    }
+const onBaulrateFinish = (values) => {
+    showTerm.value = true
+    connectLoading.value = true
+    nextTick(async () => {
+        try {
+            deviceBin.value = new DeviceBin(values.baulrate, 'terminal');
+            await deviceBin.value.connectDevice();
+            current.value = 1
+        } catch (e) {
+            current.value = 0
+            connectLoading.value = false
+        }
+
+    })
+
 };
 //file
 const fileList = ref([])
@@ -201,7 +205,7 @@ const onFileFinish = (values) => {
     } else {
         writeLoading.value = true
         current.value = 2
-        showTerm.value = true
+
         const p = deviceBin.value.program([{ data: fileData.value, address: values.address }], (written, total) => {
             progress.value = Math.floor((written / total) * 100)
         });
@@ -273,30 +277,20 @@ const handleErase = () => {
 <style>
 .program {
     padding: 16px;
-    position: absolute;
-    top: 45%;
+    height: 80%;
+    /* position: absolute;
+    top: 50%;
     left: 50%;
     width: 80%;
-    height: 70%;
+    height: 80%;
     transform: translate(-50%, -50%);
+    overflow-y: auto; */
 }
 
 .content {
     background-color: #eee;
     padding: 16px;
     margin-top: 16px;
-}
-
-.xterm {
-    padding-bottom: 40px;
-}
-
-.xterm-helper-textarea {
-    display: none;
-}
-
-.xterm-viewport {
-    display: none;
 }
 </style>
   

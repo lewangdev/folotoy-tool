@@ -7,6 +7,7 @@ export default class Deviceconsole {
   transport = null
   isConsoleClosed = true;
   deviceInfo = null
+  term = null
   constructor(terminal) {
    this.terminalName = terminal
   }

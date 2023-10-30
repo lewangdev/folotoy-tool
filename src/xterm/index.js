@@ -22,6 +22,7 @@ class MyTerm {
     return tmpUint8Array;
   }
   setTerm(transport) {
+    console.log('setTerm')
     this.term = new Terminal({
       convertEol: true,
       disableStdin: true,
