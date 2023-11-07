@@ -10,30 +10,30 @@
 
         <h2 style="text-align: center;" v-if="!mqttConnected">{{ t('mqtt.connectMqtt') }}</h2>
         <a-form :model="form" @finish="handleSubmit" v-bind="formItemLayout" v-if="!mqttConnected">
-            <a-form-item :label="t('mqtt.name')" name="name" :rules="[{ required: true, message: t('mqtt.inputName') }]">
-                <a-input v-model:value="form.name" />
-            </a-form-item>
+            <!-- <a-form-item :label="t('mqtt.name')" name="name" :rules="[{ required: true, message: t('mqtt.inputName') }]">
+                <a-input :placeholder="t('mqtt.inputName')" v-model:value="form.name" />
+            </a-form-item> -->
             <a-form-item :label="t('mqtt.clientId')" name="clientId"
                 :rules="[{ required: true, message: t('mqtt.inputClientId') }]">
-                <a-input v-model:value="form.clientId" />
+                <a-input :placeholder="t('mqtt.inputClientId')" v-model:value="form.clientId" />
             </a-form-item>
 
             <a-form-item :label="t('mqtt.host')" name="host" :rules="[{ required: true, message: t('mqtt.inputHost') }]">
-                <a-input v-model:value="form.host" />
+                <a-input :placeholder="t('mqtt.inputHost')"  v-model:value="form.host" />
             </a-form-item>
 
             <a-form-item :label="t('mqtt.port')" name="port" :rules="[{ required: true, message: t('mqtt.inputPort') }]">
-                <a-input-number style="width: 100%;" v-model:value="form.port" />
+                <a-input-number  :placeholder="t('mqtt.inputPort')"  style="width: 100%;" v-model:value="form.port" />
             </a-form-item>
             <a-form-item :label="t('mqtt.topic')" name="topic" :rules="[{ required: true, message: t('mqtt.inputTopic') }]">
-                <a-input v-model:value="form.topic" />
+                <a-input  :placeholder="t('mqtt.inputTopic')"  v-model:value="form.topic" />
             </a-form-item>
             <a-form-item :label="t('mqtt.username')" name="username">
-                <a-input v-model:value="form.username" />
+                <a-input  :placeholder="t('mqtt.inputUsername')"  v-model:value="form.username" />
             </a-form-item>
 
             <a-form-item :label="t('mqtt.password')" name="password">
-                <a-input-password v-model:value="form.password" />
+                <a-input-password  :placeholder="t('mqtt.inputPassword')" v-model:value="form.password" />
             </a-form-item>
             <a-form-item :label="t('mqtt.useSSL')" name="useSSL">
                 <a-switch v-model:checked="form.useSSL" />

@@ -60,7 +60,9 @@ export default createI18n({
         password: '密码',
         useSSL: 'SSL/TLS',
         topic: '主题',
-        inputTopic: '请输入主题'
+        inputTopic: '请输入主题',
+        inputUsername: '请输入用户名',
+        inputPassword: '请输入密码'
       }
     },
     'zh-TW': {
@@ -110,7 +112,9 @@ export default createI18n({
             password: '密碼',
             useSSL: 'SSL/TLS',
             topic: '主題',
-            inputTopic: '請輸入主題'
+            inputTopic: '請輸入主題',
+            inputUsername: '請輸入用戶名',
+            inputPassword: '請輸入密碼'
           }
     },
     'en-US': {
@@ -160,7 +164,9 @@ export default createI18n({
         password: 'Password',
         useSSL: 'SSL/TLS',
         topic: 'Topic',
-        inputTopic: 'Please Input Topic'
+        inputTopic: 'Please Input Topic',
+        inputUsername: 'Please Input Username',
+        inputPassword: 'Please Input Password'
       }
     },
   }
