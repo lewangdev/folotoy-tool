@@ -24,6 +24,7 @@ class MyTerm {
   setTerm(transport) {
     console.log('setTerm')
     this.term = new Terminal({
+      allowTransparency: true,
       convertEol: true,
       disableStdin: true,
       rows: 40,

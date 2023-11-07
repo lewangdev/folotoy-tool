@@ -1,12 +1,16 @@
 <template>
-    <div class="wrap">
-        <div @click="handlePush('program')">
+    <div :class="isMobile ? 'wrap mobile' : 'wrap'">
+        <div v-if="!isMobile" @click="handlePush('program')">
             <img src="../assets/programming.svg" alt="">
             <h2>{{ t('index.program') }}</h2>
         </div>
-        <div @click="handlePush('console')">
+        <div  v-if="!isMobile" @click="handlePush('console')">
             <img src="../assets/console.svg" alt="">
             <h2>{{ t('index.console') }}</h2>
+        </div>
+        <div  @click="handlePush('mqtt')">
+            <img src="../assets/mqtt.svg" alt="">
+            <h2>{{ t('index.mqtt') }}</h2>
         </div>
         <a-modal :getContainer="getContainer" v-model:open="showTerm" style="width: 80%;" :title="t('index.console')"
             @ok="handleOk" @cancel="handleOk">
@@ -22,7 +26,7 @@
 import { Button as AButton, message } from 'ant-design-vue';
 import { useRouter } from 'vue-router'
 import consolePage from './consolePage.vue'
-import { nextTick, ref } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import Deviceconsole from "../console/index";
 import { Modal as AModal } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
@@ -33,6 +37,13 @@ const showTerm = ref(false)
 const handleOk = () => {
     location.reload()
 };
+const isMobile = ref(false)
+onMounted(() => {
+    if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
+        // 当前设备是移动设备
+        isMobile.value = true
+    }
+})
 const onConnect = async () => {
     deviceconsole.value = new Deviceconsole('terminal');
     try {
@@ -57,6 +68,9 @@ const handlePush = (type) => {
     if (type === 'program') {
         router.push('/program')
     }
+    if (type === 'mqtt') {
+        router.push('/mqtt')
+    }
     if (type === 'console') {
         onConnect()
     }
@@ -68,7 +82,7 @@ const getContainer = () => {
   
 <style>
 .wrap {
-    width: 50%;
+    width: 70%;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -76,7 +90,11 @@ const getContainer = () => {
     display: flex;
     justify-content: space-between;
 }
-
+.mobile {
+    width: 100%;
+    display: flex;
+    justify-content:center;
+}
 .wrap>div {
     border-radius: 8px;
     text-align: center;

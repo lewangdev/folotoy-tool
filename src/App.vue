@@ -2,7 +2,7 @@
   <div class="app">
     <div class="header">
       <h1 @click="handlePushToFrontPage"><img src="./assets/title.svg" alt=""> FoloToy Web Tool</h1>
-      <a-select @change="handleChangeLang" :value="lang" style="margin-top: 6px;margin-right: 8px;width: 100px"
+      <a-select @change="handleChangeLang" :value="lang" style="margin-right: 8px;width: 100px;height: 1.8rem;margin-top:0.5rem"
         :options="langSelection"></a-select>
       <!-- <img style="width: 40px;margin-right: 20px;cursor: pointer;;" @click="darkMode = !darkMode" :src="darkMode ? require('./assets/sun.svg') : require('./assets/moon.svg')" alt=""> -->
     </div>
@@ -130,6 +130,7 @@ footer {
   background-color: #000;
   display: flex;
   justify-content: space-between;
+  line-height: 3rem;
 }
 
 h1 {
@@ -138,6 +139,7 @@ h1 {
   color: #fff;
   padding-left: 16px;
   cursor: pointer;
+  font-size: 1.5rem;
 }
 
 h1 img {

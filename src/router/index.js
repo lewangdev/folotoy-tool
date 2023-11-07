@@ -19,6 +19,11 @@ const routes = [
                 path: 'console',
                 name: 'console',
                 component: () => import('@/components/consolePage.vue'),
+            },
+            {
+                path: 'mqtt',
+                name: 'mqtt',
+                component: () => import('@/components/mqttPage.vue'),
             }
         ]
       },
