@@ -21,7 +21,7 @@ class Mqtt {
             clearInterval(this.reconnect)
             localStorage.setItem('folotoyWS', JSON.stringify(this.mqttOptions))
             this.hide()
-            success()
+            success && success()
             message.success('Connected Success')
             this.subscribe(this.mqttOptions.topic)
           },
@@ -53,9 +53,10 @@ class Mqtt {
   onConnectionLost (responseObject) {
     if (responseObject.errorCode !== 0) {
       console.log('onConnectionLost:' + responseObject.errorMessage)
+      message.error('Connection Lost')
       const _this = this
       this.reconnect = setInterval(() => {
-        console.log('reconnect...')
+        this.hide = message.loading('Connecting...')
         _this.connectMqtt()
       }, 10000)
     }

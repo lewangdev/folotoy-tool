@@ -2,7 +2,10 @@
     <div class="program">
         <div style="display: flex; justify-content: space-between;margin-bottom: 8px;">
             <a-button @click="handlePushToFrontPage" :icon="h(LeftOutlined)">{{ t('program.backToIndex') }}</a-button>
-
+            <a-radio-group v-model:value="logType" v-if="mqttConnected">
+                <a-radio-button value="chat">{{ t('index.mqtt') }}</a-radio-button>
+                <a-radio-button value="log">{{ t('index.console') }}</a-radio-button>
+            </a-radio-group>
             <a-button v-if="mqttConnected" type="primary" @click="disconnectMqtt" danger html-type="submit">{{
                 t('index.disconnect')
             }}</a-button>
@@ -19,21 +22,24 @@
             </a-form-item>
 
             <a-form-item :label="t('mqtt.host')" name="host" :rules="[{ required: true, message: t('mqtt.inputHost') }]">
-                <a-input :placeholder="t('mqtt.inputHost')"  v-model:value="form.host" />
+                <a-input :placeholder="t('mqtt.inputHost')" v-model:value="form.host" />
             </a-form-item>
 
             <a-form-item :label="t('mqtt.port')" name="port" :rules="[{ required: true, message: t('mqtt.inputPort') }]">
-                <a-input-number  :placeholder="t('mqtt.inputPort')"  style="width: 100%;" v-model:value="form.port" />
+                <a-input-number :placeholder="t('mqtt.inputPort')" style="width: 100%;" v-model:value="form.port" />
             </a-form-item>
-            <a-form-item :label="t('mqtt.topic')" name="topic" :rules="[{ required: true, message: t('mqtt.inputTopic') }]">
-                <a-input  :placeholder="t('mqtt.inputTopic')"  v-model:value="form.topic" />
+            <a-form-item :label="t('mqtt.deviceKey')" name="deviceKey"
+                :rules="[{ required: true, message: t('mqtt.inputDeviceKey') }]">
+                <a-input :placeholder="t('mqtt.inputDeviceKey')" v-model:value="form.deviceKey" />
             </a-form-item>
-            <a-form-item :label="t('mqtt.username')" name="username">
-                <a-input  :placeholder="t('mqtt.inputUsername')"  v-model:value="form.username" />
+            <a-form-item :label="t('mqtt.username')" name="username"
+                :rules="[{ required: true, message: t('mqtt.inputUsername') }]">
+                <a-input :placeholder="t('mqtt.inputUsername')" v-model:value="form.username" />
             </a-form-item>
 
-            <a-form-item :label="t('mqtt.password')" name="password">
-                <a-input-password  :placeholder="t('mqtt.inputPassword')" v-model:value="form.password" />
+            <a-form-item :label="t('mqtt.password')" name="password"
+                :rules="[{ required: true, message: t('mqtt.inputPassword') }]">
+                <a-input-password :placeholder="t('mqtt.inputPassword')" v-model:value="form.password" />
             </a-form-item>
             <a-form-item :label="t('mqtt.useSSL')" name="useSSL">
                 <a-switch v-model:checked="form.useSSL" />
@@ -45,17 +51,23 @@
         </a-form>
 
 
-        <div id="message" v-else
-            style="height: 90%;border: 1px solid #000; border-radius: 10px;padding: 8px;overflow-y: auto;">
-            <div class="message" v-for="(item, index) in messages" :key="index">{{ item.ts }}: {{ item.data }}</div>
+        <div id="message" v-else style="height: 90%;border: 1px solid #000; border-radius: 10px;padding: 8px;overflow-y: auto; overflow-x: hidden; display: flex;
+  flex-direction: column;">
+            <log-component :messages="messages" v-if="logType === 'log'"></log-component>
+            <chat-component :messages="messages" v-else></chat-component>
+
         </div>
 
     </div>
 </template>
   
 <script setup>
-import { Form as AForm, FormItem as AFormItem, Button as AButton, Input as AInput, InputNumber as AInputNumber, InputPassword as AInputPassword, Switch as ASwitch } from 'ant-design-vue';
+import { Form as AForm, FormItem as AFormItem, Button as AButton, Input as AInput, InputNumber as AInputNumber, InputPassword as AInputPassword, Switch as ASwitch, RadioGroup as ARadioGroup, RadioButton as ARadioButton } from 'ant-design-vue';
 import { onMounted, ref, h, nextTick } from 'vue';
+import logComponent from './logPage'
+import chatComponent from './chatPage'
+
+// import chatComponent from './chat.vue'
 import {
     LeftOutlined,
 } from '@ant-design/icons-vue';
@@ -69,6 +81,7 @@ const router = useRouter()
 //     return document.querySelector(".app")
 // }
 const mqttConnected = ref(false)
+const logType = ref('chat')
 const formItemLayout = {
     labelCol: {
         xs: { span: 24 },
@@ -83,11 +96,11 @@ const form = ref({
     name: '',
     clientId: '',
     host: '',
-    port: '',
+    port: 8083,
     username: '',
     password: '',
     useSSL: false,
-    topic: '',
+    deviceKey: '',
     path: '/mqtt'
 });
 const messages = ref([])
@@ -99,6 +112,7 @@ onMounted(() => {
 const mqttServer = ref(null)
 const handleSubmit = () => {
     console.log(form.value);
+    form.value.topic = `/user/folotoy/${form.value.deviceKey}/integration/event/post`
     mqttServer.value = new Mqtt(form.value, (e) => {
         console.log(JSON.parse(e.payloadString))
         messages.value.push({ ts: moment().format('YYYY-MM-DD HH:mm:ss'), data: JSON.parse(e.payloadString) })
@@ -111,8 +125,12 @@ const handleSubmit = () => {
     mqttServer.value.connectMqtt(() => { mqttConnected.value = true })
 };
 const handlePushToFrontPage = () => {
+    mqttServer.value && disconnectMqtt()
     router.push('/')
 }
+// const messagePush = (messages, message) =>  {
+
+// }
 const disconnectMqtt = () => {
     mqttServer.value.disconnectMqtt()
     messages.value = []
@@ -138,25 +156,5 @@ const disconnectMqtt = () => {
     background-color: #eee;
     padding: 16px;
     margin-top: 16px;
-}
-
-.message {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 20px;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #e9e9e9;
-}
-
-.message::before {
-    content: "";
-    position: absolute;
-    top: 10px;
-    left: -17px;
-    border-width: 10px;
-    border-style: solid;
-    border-color: transparent #e9e9e9 transparent transparent;
-}
-</style>
+}</style>
   

@@ -18,13 +18,13 @@ export default createI18n({
         disconnect: '断开',
         program: '刷机',
         console: '日志',
-        mqtt: 'MQTT'
+        mqtt: '对话'
       },
       console: {
         restart: '重启'
       },
       program: {
-        backToIndex: '返回首页',
+        backToIndex: '返回',
         connect: '连接',
         baulrate: '波特率',
         selectBaulrate: '请选择波特率',
@@ -62,7 +62,9 @@ export default createI18n({
         topic: '主题',
         inputTopic: '请输入主题',
         inputUsername: '请输入用户名',
-        inputPassword: '请输入密码'
+        inputPassword: '请输入密码',
+        inputDeviceKey: '请输入 SN',
+        deviceKey: 'SN',
       }
     },
     'zh-TW': {
@@ -70,13 +72,13 @@ export default createI18n({
             disconnect: '斷開',
             program: '刷機',
             console: '日誌',
-            mqtt: 'MQTT'
+            mqtt: '對話'
           },
           console: {
             restart: '重啟'
           },
           program: {
-            backToIndex: '返回首頁',
+            backToIndex: '返回',
             connect: '連接',
             baulrate: '波特率',
             selectBaulrate: '請選擇波特率',
@@ -114,7 +116,9 @@ export default createI18n({
             topic: '主題',
             inputTopic: '請輸入主題',
             inputUsername: '請輸入用戶名',
-            inputPassword: '請輸入密碼'
+            inputPassword: '請輸入密碼',
+            inputDeviceKey: '請輸入 SN',
+            deviceKey: 'SN',
           }
     },
     'en-US': {
@@ -122,13 +126,13 @@ export default createI18n({
         disconnect: 'Disconnect',
         program: 'Program',
         console: 'Console',
-        mqtt: 'MQTT'
+        mqtt: 'Dialogue'
       },
       console: {
         restart: 'Restart'
       },
       program: {
-        backToIndex: 'Back To Index',
+        backToIndex: 'Back',
         connect: 'Connect',
         baulrate: 'Baulrate',
         selectBaulrate: 'Please select baulrate',
@@ -166,7 +170,9 @@ export default createI18n({
         topic: 'Topic',
         inputTopic: 'Please Input Topic',
         inputUsername: 'Please Input Username',
-        inputPassword: 'Please Input Password'
+        inputPassword: 'Please Input Password',
+        inputDeviceKey: 'Please Input SN',
+        deviceKey: 'SN'
       }
     },
   }

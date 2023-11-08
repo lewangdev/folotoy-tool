@@ -1,6 +1,7 @@
 import { Terminal } from "xterm";
 import { FitAddon } from 'xterm-addon-fit';
 import { throttle, debouce } from '../utils/utils'
+import {message} from 'ant-design-vue'
 import 'xterm/css/xterm.css';
 class MyTerm {
   constructor(terminal) {
@@ -42,6 +43,20 @@ class MyTerm {
     this.writeTermDebouce = debouce(this.term.write, this)
     this.writeTermThrottle = throttle(transport.write, transport)
     fitAddon.fit();
+    this.term.element.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
+      
+      // Get the selected text
+      const selection = this.term.getSelection();
+    
+      // Copy the selected text to the clipboard
+      navigator.clipboard.writeText(selection).then(() => {
+        console.log('Copying to clipboard was successful!');
+        message.success('Copying to clipboard was successful!')
+      }, (err) => {
+        console.error('Could not copy text: ', err);
+      });
+    });
   }
   trim(str) {
 
