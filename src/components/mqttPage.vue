@@ -108,14 +108,11 @@ onMounted(() => {
     }
 })
 const mqttServer = ref(null)
-let a = []
 const handleSubmit = () => {
     console.log(form.value);
     form.value.topic = `/user/folotoy/${form.value.deviceKey}/integration/event/post`
     mqttServer.value = new Mqtt(form.value, (e) => {
         messages.value.push({ ts: moment().format('YYYY-MM-DD HH:mm:ss'), data: JSON.parse(e.payloadString) })
-        a.push({ ts: moment().format('YYYY-MM-DD HH:mm:ss'), data: JSON.parse(e.payloadString) })
-        console.log(a)
         nextTick(() => {
             const element = document.getElementById("message");
             // 滚动到底部

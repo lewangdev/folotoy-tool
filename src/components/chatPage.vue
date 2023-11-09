@@ -42,25 +42,38 @@ onMounted(() => {
     manageMessage(props.messages)
 })
 watch(
-  () => props.messages.length,
-  (newLength, oldLength) => {
-    if (oldLength !== undefined && newLength > oldLength) {
-      const newItems = props.messages.slice(lastProcessedIndex.value);
-      manageMessage(newItems)
-      lastProcessedIndex.value = newLength;
-    }
-  },
-  { immediate: false }
+    () => props.messages.length,
+    (newLength, oldLength) => {
+        if (oldLength !== undefined && newLength > oldLength) {
+            const newItems = props.messages.slice(lastProcessedIndex.value);
+            manageMessage(newItems)
+            lastProcessedIndex.value = newLength;
+        }
+    },
+    { immediate: false }
 );
+// const formatRecordsMap = (len) => {
+//     recordsMap.value = Object.keys(recordsMap.value).reduce((newData, key) => {
+//         newData[parseInt(key) - len] = recordsMap.value[key];
+//         return newData;
+//     }, {});
+//     console.log(recordsMap.value)
+// }
+let ajust = 0
 const manageMessage = (newItems) => {
     newItems.forEach(item => {
         if (item.data && item.data.inputParams && (item.data.inputParams.voiceUrl || item.data.inputParams.recordingUrl)) {
-          const recordingId = item.data.inputParams.recordingId
-          const order = item.data.inputParams.order || 0
-          recordsMap.value[recordingId] = recordsMap.value[recordingId] || []
-          recordsMap.value[recordingId][order] = item
+            const recordingId = item.data.inputParams.recordingId
+            if (recordingId === 0 && Object.keys(recordsMap.value).length > 2) {
+                //  五条为期限,超过五条修改keys
+                const len = Object.keys(recordsMap.value).length
+                ajust += len
+            }
+            const order = item.data.inputParams.order || 0
+            recordsMap.value[recordingId + ajust] = recordsMap.value[recordingId + ajust] || []
+            recordsMap.value[recordingId + ajust][order] = item
         }
-      });
+    });
 }
 const messages = computed(() => {
     return Object.values(recordsMap.value).flat();
