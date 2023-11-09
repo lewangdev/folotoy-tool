@@ -47,7 +47,7 @@ export default createI18n({
         confirmErase: '确定抹除设备'
       },
       mqtt: {
-        connectMqtt: '连接 MQTT',
+        connectMqtt: '对话',
         name: '名称',
         inputName: '请输入名称',
         clientId: 'Client ID',
@@ -101,7 +101,7 @@ export default createI18n({
             confirmErase: '確定抹除設備'
           },
           mqtt: {
-            connectMqtt: '連接 MQTT',
+            connectMqtt: '對話',
             name: '名稱',
             inputName: '請輸入名稱',
             clientId: 'Client ID',
@@ -155,7 +155,7 @@ export default createI18n({
         confirmErase: 'Are you sure to erase device?'
       },
       mqtt: {
-        connectMqtt: 'Connect Mqtt',
+        connectMqtt: 'Dialogue',
         name: 'Name',
         inputName: 'Please Input Name',
         clientId: 'Client ID',

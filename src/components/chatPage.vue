@@ -22,20 +22,6 @@ import voiceComponent from './voice.vue'
 const props = defineProps({
     messages: Array,
 })
-// const messages = computed(() => {
-//     const recordsMap = {}
-//     props.messages.forEach(item => {
-//         if (item.data && item.data.inputParams && (item.data.inputParams.voiceUrl || item.data.inputParams.recordingUrl)) {
-//             const recordingId = item.data.inputParams.recordingId
-//             const order = item.data.inputParams.order || 0
-//             recordsMap[recordingId] = recordsMap[recordingId] || []
-//             recordsMap[recordingId][order] = item
-//         }
-//     })
-//     const ms = Object.values(recordsMap).flat()
-//     console.log(ms)
-//     return ms;
-// })
 const lastProcessedIndex = ref(0);
 const recordsMap = ref({});
 onMounted(() => {
@@ -52,20 +38,13 @@ watch(
     },
     { immediate: false }
 );
-// const formatRecordsMap = (len) => {
-//     recordsMap.value = Object.keys(recordsMap.value).reduce((newData, key) => {
-//         newData[parseInt(key) - len] = recordsMap.value[key];
-//         return newData;
-//     }, {});
-//     console.log(recordsMap.value)
-// }
 let ajust = 0
 const manageMessage = (newItems) => {
     newItems.forEach(item => {
         if (item.data && item.data.inputParams && (item.data.inputParams.voiceUrl || item.data.inputParams.recordingUrl)) {
             const recordingId = item.data.inputParams.recordingId
             if (recordingId === 0 && Object.keys(recordsMap.value).length > 2) {
-                //  五条为期限,超过五条修改keys
+                //  重置recoedingId后，改变后续的recordingId
                 const len = Object.keys(recordsMap.value).length
                 ajust += len
             }
