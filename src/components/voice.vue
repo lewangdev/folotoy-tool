@@ -5,7 +5,7 @@
             <PauseCircleOutlined v-else @click="handlePlayPause" />
         </div>
 
-        <div ref="waveformRef" style=" width: 100px;"></div>
+        <div ref="waveformRef" style=" width: 80%;"></div>
     </div>
 </template>
   

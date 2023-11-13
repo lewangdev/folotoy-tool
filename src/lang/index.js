@@ -4,6 +4,8 @@ const getLang = (lang) => {
         return 'zh-TW'
     } else if (lang === 'zh-CN') {
         return 'zh-CN'
+    } else if (lang === 'ja-JP') {
+      return 'ja-JP'
     } else {
         return 'en-US'
     }
@@ -175,5 +177,59 @@ export default createI18n({
         deviceKey: 'SN'
       }
     },
+    'ja-JP': {
+      index: {
+        disconnect: '切断',
+        program: 'プログラム',
+        console: 'コンソール',
+        mqtt: '対話'
+      },
+      console: {
+        restart: '再起動'
+      },
+      program: {
+        backToIndex: '戻る',
+        connect: '接続',
+        baulrate: 'ボーレート',
+        selectBaulrate: 'ボーレートを選択してください',
+        inputAddress: 'アドレスを入力してください',
+        address: 'アドレス',
+        selectFile: 'ファイルを選択',
+        write: '書き込む',
+        success: '成功しました！デバイスを再起動してください',
+        inProcessTip: '書き込み中です。接続を切断しますか？',
+        confirm: '確認',
+        cancle: 'キャンセル',
+        stepConnect: 'デバイスに接続',
+        inProcess: '書き込み中',
+        done: '完了',
+        pleaseSelectFile: 'ファイルを選択してください',
+        disconnectError: 'デバイスが切断されました。再接続してください',
+        erase: '消去',
+        eraseSuccess: 'デバイスが正常に消去されました',
+        eraseError: 'デバイスの消去に失敗しました',
+        confirmErase: 'デバイスの消去を確認'
+      },
+      mqtt: {
+        connectMqtt: '対話接続',
+        name: '名前',
+        inputName: '名前を入力してください',
+        clientId: 'クライアントID',
+        inputClientId: 'クライアントIDを入力してください',
+        host: 'ホスト',
+        inputHost: 'ホストを入力してください',
+        port: 'ポート',
+        inputPort: 'ポートを入力してください',
+        username: 'ユーザー名',
+        password: 'パスワード',
+        useSSL: 'SSL/TLS',
+        topic: 'トピック',
+        inputTopic: 'トピックを入力してください',
+        inputUsername: 'ユーザー名を入力してください',
+        inputPassword: 'パスワードを入力してください',
+        inputDeviceKey: 'SNを入力してください',
+        deviceKey: 'SN'
+      }
+    }
   }
 })

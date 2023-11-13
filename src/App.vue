@@ -43,6 +43,10 @@ const langSelection = [
         value: 'en-US',
         label: 'English',
     },
+    {
+      value: 'ja-JP',
+      label: '日本語'
+    }
 ]
 // const darkMode = ref(window.matchMedia('(prefers-color-scheme: dark)').matches)
 </script>

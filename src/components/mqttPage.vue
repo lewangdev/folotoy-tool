@@ -97,7 +97,7 @@ const form = ref({
     port: 8083,
     username: '',
     password: '',
-    useSSL: false,
+    useSSL: window.location.protocol === 'https:',
     deviceKey: '',
     path: '/mqtt'
 });
@@ -108,18 +108,49 @@ onMounted(() => {
     }
 })
 const mqttServer = ref(null)
+let autoScroll = true;
+
+// 检查是否滚动到元素底部
+const isScrolledToBottom = (el) => {
+    return el.scrollTop + el.clientHeight >= el.scrollHeight;
+}
+
+// 滚动到元素底部
+const scrollToBottom = (el) => {
+    el.scrollTop = el.scrollHeight;
+}
+let element;
+// 处理滚动事件
+const handleScroll = () => {
+    // 如果用户已经滚动到元素底部
+    if (isScrolledToBottom(element)) {
+        autoScroll = true
+    } else {
+        // 用户主动滚动，取消自动滚动功能
+        autoScroll = false;
+    }
+};
+
+// 提交表单的处理函数
 const handleSubmit = () => {
     console.log(form.value);
-    form.value.topic = `/user/folotoy/${form.value.deviceKey}/integration/event/post`
+    form.value.topic = `/user/folotoy/${form.value.deviceKey}/integration/event/post`;
     mqttServer.value = new Mqtt(form.value, (e) => {
-        messages.value.push({ ts: moment().format('YYYY-MM-DD HH:mm:ss'), data: JSON.parse(e.payloadString) })
+        messages.value.push({ ts: moment().format('YYYY-MM-DD HH:mm:ss'), data: JSON.parse(e.payloadString) });
+        if (autoScroll) {
+            nextTick(() => {
+                scrollToBottom(element);
+            });
+        }
+    });
+    mqttServer.value.connectMqtt(() => {
+        mqttConnected.value = true;
+        autoScroll = true;
         nextTick(() => {
-            const element = document.getElementById("message");
-            // 滚动到底部
-            element.scrollTop = element.scrollHeight;
+            element = document.getElementById('message');
+            element.addEventListener('scroll', handleScroll);
         })
-    })
-    mqttServer.value.connectMqtt(() => { mqttConnected.value = true })
+    });
 };
 const handlePushToFrontPage = () => {
     mqttServer.value && disconnectMqtt()
@@ -153,5 +184,6 @@ const disconnectMqtt = () => {
     background-color: #eee;
     padding: 16px;
     margin-top: 16px;
-}</style>
+}
+</style>
   
