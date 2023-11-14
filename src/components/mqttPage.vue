@@ -134,7 +134,7 @@ const handleScroll = () => {
 // 提交表单的处理函数
 const handleSubmit = () => {
     console.log(form.value);
-    form.value.topic = `/user/folotoy/${form.value.deviceKey}/integration/event/post`;
+    form.value.topic = `/user/folotoy/${form.value.deviceKey}/thing/command/call`;
     mqttServer.value = new Mqtt(form.value, (e) => {
         messages.value.push({ ts: moment().format('YYYY-MM-DD HH:mm:ss'), data: JSON.parse(e.payloadString) });
         if (autoScroll) {
