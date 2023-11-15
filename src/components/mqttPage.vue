@@ -97,10 +97,10 @@ const form = ref({
     name: '',
     clientId: '',
     host: '',
-    port: 8084,
+    port: 8083,
     username: '',
     password: '',
-    useSSL: window.location.protocol === 'https:',
+    useSSL: false,
     deviceKey: '',
     path: '/mqtt'
 });
