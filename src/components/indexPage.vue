@@ -8,7 +8,7 @@
             <img src="../assets/console.svg" alt="">
             <h2>{{ t('index.console') }}</h2>
         </div>
-        <div  @click="handlePush('mqtt')">
+        <div  @click="handlePush('dialogue')">
             <img src="../assets/mqtt.svg" alt="">
             <h2>{{ t('index.mqtt') }}</h2>
         </div>
@@ -68,8 +68,8 @@ const handlePush = (type) => {
     if (type === 'program') {
         router.push('/program')
     }
-    if (type === 'mqtt') {
-        router.push('/mqtt')
+    if (type === 'dialogue') {
+        router.push('/dialogue')
     }
     if (type === 'console') {
         onConnect()

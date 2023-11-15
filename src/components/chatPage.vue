@@ -1,15 +1,13 @@
 <template>
-    <div :class="item && item.data.identifier === 'recording_transcribed' ? 'user' : 'message'"
+    <div :class="item.identifier === 'recording_transcribed' ? 'user' : 'message'"
         v-for="(item, index) in messages" :key="index">
         <div v-if="item">
-            <div>{{ item.ts }} {{ item.data.inputParams.order ? 'Current Order: ' + item.data.inputParams.order : '' }}
+            <div>{{ item.ts }} {{ item.order ? 'Current Order: ' + item.order : '' }}
             </div>
-            <div>{{ item.data.inputParams.recordingText ? item.data.inputParams.recordingText :
-                item.data.inputParams.voiceText
-            }}</div>
+            <div>{{ item.text }}</div>
             <voice-component :key="index"
-                v-if="item.data && item.data.inputParams && (item.data.inputParams.voiceUrl || item.data.inputParams.recordingUrl)"
-                :src="item.data.inputParams.voiceUrl ? item.data.inputParams.voiceUrl : item.data.inputParams.recordingUrl"></voice-component>
+                v-if="item.url"
+                :src="item.url"></voice-component>
         </div>
 
     </div>
@@ -22,6 +20,7 @@ import voiceComponent from './voice.vue'
 const props = defineProps({
     messages: Array,
 })
+
 const lastProcessedIndex = ref(0);
 const recordsMap = ref({});
 onMounted(() => {
@@ -38,19 +37,19 @@ watch(
     },
     { immediate: false }
 );
-let ajust = 0
 const manageMessage = (newItems) => {
     newItems.forEach(item => {
         if (item.data && item.data.inputParams && (item.data.inputParams.voiceUrl || item.data.inputParams.recordingUrl)) {
+            const newItem = {}
             const recordingId = item.data.inputParams.recordingId
-            if (recordingId === 0 && Object.keys(recordsMap.value).length > 2) {
-                //  重置recoedingId后，改变后续的recordingId
-                const len = Object.keys(recordsMap.value).length
-                ajust += len
-            }
             const order = item.data.inputParams.order || 0
-            recordsMap.value[recordingId + ajust] = recordsMap.value[recordingId + ajust] || []
-            recordsMap.value[recordingId + ajust][order] = item
+            newItem.url = item.data.inputParams.voiceUrl || item.data.inputParams.recordingUrl
+            newItem.text = item.data.inputParams.recordingText || item.data.inputParams.voiceText
+            newItem.order =  item.data.inputParams.order || 0
+            newItem.ts = item.ts
+            newItem.identifier = item.data.identifier 
+            recordsMap.value[recordingId] = recordsMap.value[recordingId] || []
+            recordsMap.value[recordingId][order] = newItem
         }
     });
 }
