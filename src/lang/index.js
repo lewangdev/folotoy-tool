@@ -67,6 +67,7 @@ export default createI18n({
         inputPassword: '请输入密码',
         inputDeviceKey: '请输入 SN',
         deviceKey: 'SN',
+        activate: '激活'
       }
     },
     'zh-TW': {
@@ -121,6 +122,7 @@ export default createI18n({
             inputPassword: '請輸入密碼',
             inputDeviceKey: '請輸入 SN',
             deviceKey: 'SN',
+            activate: '激活'
           }
     },
     'en-US': {
@@ -174,7 +176,8 @@ export default createI18n({
         inputUsername: 'Please Input Username',
         inputPassword: 'Please Input Password',
         inputDeviceKey: 'Please Input SN',
-        deviceKey: 'SN'
+        deviceKey: 'SN',
+        activate: 'Activate'
       }
     },
     'ja-JP': {
@@ -228,7 +231,8 @@ export default createI18n({
         inputUsername: 'ユーザー名を入力してください',
         inputPassword: 'パスワードを入力してください',
         inputDeviceKey: 'SNを入力してください',
-        deviceKey: 'SN'
+        deviceKey: 'SN',
+        activate: 'アクティブにする'
       }
     }
   }

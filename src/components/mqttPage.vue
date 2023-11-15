@@ -22,7 +22,10 @@
             </a-form-item>
 
             <a-form-item :label="t('mqtt.host')" name="host" :rules="[{ required: true, message: t('mqtt.inputHost') }]">
-                <a-input :placeholder="t('mqtt.inputHost')" v-model:value="form.host" />
+                <div style="display: flex;justify-content: space-between;">
+                    <a-input style="border-top-right-radius: 0; border-bottom-right-radius: 0;" :placeholder="t('mqtt.inputHost')" v-model:value="form.host" />
+                    <a-button style="border-top-left-radius: 0; border-bottom-left-radius: 0;"  type="primary" :disabled="!form.host || !form.port" @click="navigateToActivateMqttServer">{{ t('mqtt.activate') }}</a-button>
+                </div>
             </a-form-item>
 
             <a-form-item :label="t('mqtt.port')" name="port" :rules="[{ required: true, message: t('mqtt.inputPort') }]">
@@ -94,7 +97,7 @@ const form = ref({
     name: '',
     clientId: '',
     host: '',
-    port: 8083,
+    port: 8084,
     username: '',
     password: '',
     useSSL: window.location.protocol === 'https:',
@@ -109,7 +112,9 @@ onMounted(() => {
 })
 const mqttServer = ref(null)
 let autoScroll = true;
-
+const navigateToActivateMqttServer = () => {
+    window.open(`https://${form.value.host}:${form.value.port}/mqtt`,  '_blank')
+}
 // 检查是否滚动到元素底部
 const isScrolledToBottom = (el) => {
     return el.scrollTop + el.clientHeight >= el.scrollHeight;
@@ -134,7 +139,7 @@ const handleScroll = () => {
 // 提交表单的处理函数
 const handleSubmit = () => {
     console.log(form.value);
-    form.value.topic = `/user/folotoy/${form.value.deviceKey}/thing/command/call`;
+    form.value.topic = `/sys/folotoy/${form.value.deviceKey}/thing/event/post`;
     mqttServer.value = new Mqtt(form.value, (e) => {
         messages.value.push({ ts: moment().format('YYYY-MM-DD HH:mm:ss'), data: JSON.parse(e.payloadString) });
         if (autoScroll) {
