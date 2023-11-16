@@ -59,5 +59,12 @@ export default class Deviceconsole {
     await new Promise((resolve) => setTimeout(resolve, 100));
     await this.transport.setDTR(true);
   };
+  write = async (data) => {
+    if (this.device.writable) {
+      const writer = this.device.writable.getWriter();
+      await writer.write(data);
+      writer.releaseLock();
+  }
+  }
 }
 

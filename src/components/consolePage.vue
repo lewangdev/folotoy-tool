@@ -38,7 +38,8 @@ const handleKeyDown = (event, ev) => {
         props.deviceconsole.term.writeTermDebouce('Folotoy $: ' + event.target.value + '\r\n')
         const encoder = new TextEncoder();
         const uint8Array = encoder.encode(event.target.value);
-        props.deviceconsole.transport.write(uint8Array)
+        
+        props.deviceconsole.write(uint8Array)
         console.log(uint8Array)
         event.target.value = ''
 

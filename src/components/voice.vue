@@ -37,7 +37,7 @@ export default {
             isPlaying.value = false;
         }
         onBeforeUnmount(() => {
-            wavesurfer.value.destroy();
+            wavesurfer.value&&wavesurfer.value.destroy();
         });
 
         const handlePlayPause = () => {
