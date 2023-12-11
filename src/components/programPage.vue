@@ -209,7 +209,7 @@ const onFileFinish = (values) => {
         const p = deviceBin.value.program([{ data: fileData.value, address: values.address }], (written, total) => {
             progress.value = Math.floor((written / total) * 100)
         });
-        p.catch(() => {
+        p.catch((e) => {
             try {
                 handleDisconnect()
             } catch (e) {
@@ -218,7 +218,7 @@ const onFileFinish = (values) => {
                 writeLoading.value = false
                 showTerm.value = false
             }
-            message.error(t('program.disconnectError'))
+            message.error(t('program.disconnectError') + ' ' + e.message)
         })
         p.finally(async () => {
             try {

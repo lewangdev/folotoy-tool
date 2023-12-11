@@ -23,8 +23,11 @@
 
             <a-form-item :label="t('mqtt.host')" name="host" :rules="[{ required: true, message: t('mqtt.inputHost') }]">
                 <div style="display: flex;justify-content: space-between;">
-                    <a-input style="border-top-right-radius: 0; border-bottom-right-radius: 0;" :placeholder="t('mqtt.inputHost')" v-model:value="form.host" />
-                    <a-button style="border-top-left-radius: 0; border-bottom-left-radius: 0;"  type="primary" :disabled="!form.host || !form.port" @click="navigateToActivateMqttServer">{{ t('mqtt.activate') }}</a-button>
+                    <a-input style="border-top-right-radius: 0; border-bottom-right-radius: 0;"
+                        :placeholder="t('mqtt.inputHost')" v-model:value="form.host" />
+                    <a-button style="border-top-left-radius: 0; border-bottom-left-radius: 0;" type="primary"
+                        :disabled="!form.host || !form.port" @click="navigateToActivateMqttServer">{{ t('mqtt.activate')
+                        }}</a-button>
                 </div>
             </a-form-item>
 
@@ -54,11 +57,13 @@
         </a-form>
 
 
-        <div id="message" v-else style="height: 90%;border: 1px solid #000; border-radius: 10px;padding: 8px;overflow-y: auto; overflow-x: hidden; display: flex;
-  flex-direction: column;">
+        <div id="message" v-else style="height: 90%;border: 1px solid #000; border-radius: 10px;padding: 8px;overflow-y: hidden; overflow-x: hidden; display: flex;
+  flex-direction: column;position: relative;box-sizing: border-box;">
             <log-component :messages="messages" v-if="logType === 'log'"></log-component>
-            <chat-component :messages="messages" v-else></chat-component>
+            <chat-component @handleSendMqtt="handleSendMqtt" :messages="messages"
+                v-if="logType === 'chat'"></chat-component>
         </div>
+
     </div>
 </template>
   
@@ -81,6 +86,12 @@ const router = useRouter()
 // const getContainer = () => {
 //     return document.querySelector(".app")
 // }
+const handleSendMqtt = (msg) => {
+    mqttServer.value && mqttServer.value.send(`/sys/folotoy/${form.value.deviceKey}/thing/command/call`, msg, 0, false)
+    nextTick(() => {
+        scrollToBottom(element);
+    });
+}
 const mqttConnected = ref(false)
 const logType = ref('chat')
 const formItemLayout = {
@@ -113,7 +124,7 @@ onMounted(() => {
 const mqttServer = ref(null)
 let autoScroll = true;
 const navigateToActivateMqttServer = () => {
-    window.open(`https://${form.value.host}:${form.value.port}/mqtt`,  '_blank')
+    window.open(`https://${form.value.host}:${form.value.port}/mqtt`, '_blank')
 }
 // 检查是否滚动到元素底部
 const isScrolledToBottom = (el) => {
@@ -138,7 +149,6 @@ const handleScroll = () => {
 
 // 提交表单的处理函数
 const handleSubmit = () => {
-    console.log(form.value);
     form.value.topic = `/sys/folotoy/${form.value.deviceKey}/thing/event/post`;
     mqttServer.value = new Mqtt(form.value, (e) => {
         messages.value.push({ ts: moment().format('YYYY-MM-DD HH:mm:ss'), data: JSON.parse(e.payloadString) });
@@ -152,7 +162,7 @@ const handleSubmit = () => {
         mqttConnected.value = true;
         autoScroll = true;
         nextTick(() => {
-            element = document.getElementById('message');
+            element = document.getElementById('message').children[0];
             element.addEventListener('scroll', handleScroll);
         })
     });

@@ -96,7 +96,7 @@ export default class DeviceBin {
         resolve()
       } catch (e) {
         this.term.term.writeln(`Error: ${e.message}`);
-        reject()
+        reject(e)
       }
     })
     return promise

@@ -1,7 +1,10 @@
 <template>
-    <div class="message" v-for="(item, index) in props.messages" :key="index">
+    <div style="overflow-y: auto; overflow-x: hidden;  ">
+        <div class="message" v-for="(item, index) in props.messages" :key="index">
         <div>{{ item.ts }}: {{ item.data }}</div>
     </div>
+    </div>
+   
 </template>
   
 <script setup>
