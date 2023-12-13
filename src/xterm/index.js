@@ -64,16 +64,13 @@ class MyTerm {
 
   }
   Uint8ArrayToString(fileData) {
-    var dataString = "";
-    for (var i = 0; i < fileData.length; i++) {
-      dataString += String.fromCharCode(fileData[i]);
-    }
-    return this.trim(dataString)
+    return fileData
   }
   writeTerm(data) {
-    // console.log(this.Uint8ArrayToString(data))
+    console.log(this.Uint8ArrayToString(data))
     this.timer && clearTimeout(this.timer)
     this.timer = null
+    
     this.writeTermDebouce(this.Uint8ArrayToString(data))
   }
   disposeTerm() {
